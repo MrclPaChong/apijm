@@ -18,11 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class TestController {
 
-    protected static final Logger logger = LoggerFactory.getLogger(TestController.class);
+   /* protected static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
-    /**
+    *//**
      *  返回公匙给对方
-     */
+     *//*
     @RequestMapping("PublicKey")
     public ResponseBean PublicKey(HttpServletResponse httpServletResponse) throws Exception{
 
@@ -35,9 +35,9 @@ public class TestController {
     }
 
 
-    /**
+    *//**
      * 获得Authorization的约定
-     */
+     *//*
     @PostMapping("/Authorization")
     public ResponseBean Authorization(HttpServletRequest request){
 
@@ -59,9 +59,9 @@ public class TestController {
         String res = "姓名"+jusername + "密码\n"+jpassword +"时间戳\n"+timestamp;
         logger.info("解密参数1："+jusername+"\t解密参数2："+jpassword);
 
-  /*      String zhengchang = jiemi.substring(0,jiemi.length() - 13);*/
+  *//*      String zhengchang = jiemi.substring(0,jiemi.length() - 13);*//*
         return new ResponseBean(200,"success",res);
-    }
+    }*/
 
 
 }

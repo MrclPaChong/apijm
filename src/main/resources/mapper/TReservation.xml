@@ -8,11 +8,57 @@
         SELECT * FROM t_reservation_info
     </select>
 
+
+    <!--预约活动查询-->
+    <select id="getTReservationByUserCardNumber" resultType="com.alibaba.fastjson.JSONObject">
+                SELECT
+            tr.id,
+            tr.service_unid,
+            tr.appointment_date,
+            tr.timezone,
+            tr.mobile,
+            tr.idcard,
+            tr.realname,
+            tr.create_dttm,
+            tr.update_dttm,
+            tri.dept_name,
+            tri.service_type,
+            tri.law_limit,
+            tri.promise_day,
+            tri.promise_type,
+            tri.contact_phone,
+            tri.monitor_complain,
+            tri.charge_standard,
+            tri.accept_address,
+            tri.accept_time,
+            tri.ifdsx,
+            tri.material,
+            tri.image_url,
+            tri.material_name
+        FROM
+            t_reservation tr,
+            t_reservation_info tri
+            WHERE
+						tr.service_unid =tri.id
+						AND
+            tr.idcard =#{idcard}
+    </select>
+
+
+    <!--效验已经预约的活动不能再预约  活动ID-->
+    <select id="getReservationId" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT service_unid FROM t_reservation WHERE idcard=#{idcard} AND service_unid=#{service_unid}
+    </select>
     <!--预约提交上送-->
     <insert id="insertByReservation" >
 
        INSERT INTO t_reservation (id,service_unid,appointment_date,timezone,mobile,idcard,realname) VALUES
        (#{id},#{service_unid},#{appointment_date},#{timezone},#{mobile},#{idcard},#{realname})
     </insert>
+
+    <!--删除已预约活动-->
+    <delete id="deleteReservationById">
+        DELETE FROM t_reservation WHERE id=#{id}
+    </delete>
 
 </mapper>

@@ -17,7 +17,17 @@ public interface TReservationServer {
     JSONObject getByAll();
 
     /**
+     * 用户根据身份证号查询预约活动
+     */
+    ResponseBean getTReservationByUserCardNumber(JSONObject jsonObject);
+
+    /**
      * 预约提交上送
      */
     ResponseBean insertByReservation(JSONObject jsonObject);
+
+    /**
+     * 根据ID删除已预约的活动
+     */
+    ResponseBean deleteReservationById(JSONObject jsonObject);
 }

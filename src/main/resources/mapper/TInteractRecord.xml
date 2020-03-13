@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.jm.mapper.TInteractRecordDao">
+    <resultMap type="com.example.jm.Model.TInteractRecord" id="TInteractRecord">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="DICT_CODE" property="dictCode" jdbcType="VARCHAR"/>
+        <result column="DESCRIBE" property="describe" jdbcType="VARCHAR"/>
+        <result column="PALM_HAND_URL1" property="palmHandUrl1" jdbcType="VARCHAR"/>
+        <result column="PALM_HAND_URL2" property="palmHandUrl2" jdbcType="VARCHAR"/>
+        <result column="PALM_HAND_URL3" property="palmHandUrl3" jdbcType="VARCHAR"/>
+        <result column="LON" property="lon" jdbcType="VARCHAR"/>
+        <result column="LAT" property="lat" jdbcType="VARCHAR"/>
+        <result column="POSITION_GPS" property="positionGps" jdbcType="VARCHAR"/>
+        <result column="CREATE_ID" property="createId" jdbcType="VARCHAR"/>
+        <result column="CRED_NUM" property="createNum" jdbcType="VARCHAR"/>
+        <result column="RESI_NAME" property="resiName" jdbcType="VARCHAR"/>
+        <result column="RESI_TEL" property="resiTel" jdbcType="VARCHAR"/>
+        <result column="CREATE_DTTM" property="createDttm" jdbcType="DATE"/>
+        <result column="AREA_ID" property="areaId" jdbcType="VARCHAR"/>
+        <result column="AREA_NAME" property="areaName" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status"/>
+        <result column="IS_DELETE" property="isDelete" jdbcType="VARCHAR"/>
+        <result column="HANDLE_NAME" property="handleName" jdbcType="VARCHAR"/>
+        <result column="HANDLE_ENTITY" property="handleEntity" jdbcType="VARCHAR"/>
+        <result column="HANDLE_DTTM" property="handleDttm" jdbcType="DATE"/>
+        <result column="HANDLE_DESC" property="handleDesc" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 添加 -->
+    <insert id="insertByTIR" parameterType="TInteractRecord" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyColumn="ID" keyProperty="id" resultType="string" order="BEFORE">
+            select replace(uuid(), '-', '') as id from dual
+        </selectKey>
+        <!-- selectKey 标签表示子查询中主键的提取问题
+             	 keyColumn：表示查询语句返回结果的列名
+             	 keyProperty：表示对应的 domain 对象（指 parameterType 指定的对象）中需要被赋值的属性，一般是主键
+             	 			  相当于java中设置实体类属性一样
+             	 order="BEFORE：表示在插入语句之前执行
+             	 resultType="int"：表示返回值得类型为int类型
+             	 SelectKey需要注意order属性，像MySQL一类支持自动增长类型的数据库中，order需要设置为AFTER才会取到正确的值，像Oracle这样取序列的情况，需要设置为BEFORE
+			     在上面示例的insert用法中，就是order属性设置成了BEFORE才导致自增属性没有生效。改成AFTER后，主键就开始自增了
+             	 -->
+        INSERT  into
+        t_interact_record
+        values
+        (#{id},#{dictCode},#{describe},#{palmHandUrl1},#{palmHandUrl2},#{palmHandUrl3},#{lon},#{lat},#{positionGps},#{createId},#{createNum},#{resiName},#{resiTel},#{createDttm},#{areaId},#{areaName},#{status},#{isDelete},#{handleName},#{handleEntity},#{handleDttm},#{handleDesc},#{remark})
+    </insert>
+
+
+
+    <!--查询已提交的事项-->
+    <select id="getTIRByUserCreateNum" resultType="com.alibaba.fastjson.JSONObject">
+          SELECT
+            ID,
+            DICT_CODE,
+            PALM_HAND_URL1,
+            PALM_HAND_URL2,
+            PALM_HAND_URL3,
+            LON,
+            LAT,
+            POSITION_GPS,
+            CREATE_ID,
+            CRED_NUM,
+            RESI_NAME,
+            RESI_TEL,
+            CREATE_DTTM,
+            AREA_ID,
+            AREA_NAME,
+            IS_DELETE,
+            HANDLE_NAME,
+            HANDLE_ENTITY,
+            HANDLE_DTTM,
+            HANDLE_DESC,
+            `STATUS`,
+            `DESCRIBE`,
+            REMARK
+        FROM
+            t_interact_record
+            WHERE
+            IS_DELETE='0'
+            AND
+            CRED_NUM =#{createNum}
+    </select>
+
+    <!--修改-->
+    <update id="updateByTIR" parameterType="com.alibaba.fastjson.JSONObject" >
+        update t_interact_record
+        <set>
+            <if test="status != null">STATUS=#{status},</if>
+            <if test="isDelete != null">IS_DELETE=#{isDelete},</if>
+            <if test="remark != null">REMARK=#{remark},</if>
+            <if test="handleName != null">HANDLE_NAME=#{handleName},</if>
+            <if test="handleEntity != null">HANDLE_ENTITY=#{handleEntity},</if>
+            <if test="handleDttm != null">HANDLE_DTTM=#{handleDttm},</if>
+            <if test="handleDesc != null">HANDLE_DESC=#{handleDesc}</if>
+        </set>
+        where
+        ID=#{id}
+    </update>
+
+</mapper>

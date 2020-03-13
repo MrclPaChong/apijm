@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.jm.mapper.TAttendanceDao">
+
+
+    <!--查询所有考勤记录-->
+    <select id="selectAll" resultType="com.alibaba.fastjson.JSONObject">
+
+    SELECT * FROM t_attendance WHERE createNum=#{createNum}
+
+    </select>
+
+    <!--查询当天考勤记录-->
+    <select id="selectToday" resultType="com.alibaba.fastjson.JSONObject">
+
+    SELECT * FROM t_attendance WHERE createNum=#{createNum} AND  date(createDttm) = curdate()
+
+    </select>
+
+    <!--查询本月考勤记录-->
+    <select id="selectMonth" resultType="com.alibaba.fastjson.JSONObject">
+
+
+       SELECT
+	id,
+	content,
+	palmHandUrl1,
+	positionGps,
+	createId,
+	createNum,
+	resiName,
+	resiTel,
+	createDttm,
+	DATE_FORMAT( createDttm, '%d' ) day
+FROM t_attendance WHERE createNum=#{createNum} AND DATE_FORMAT( createDttm, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) ORDER BY createDttm
+
+    </select>
+
+    <!--根据年/月 查询月数据-->
+    <select id="selectMonthByYearByMonthByDay" resultType="com.alibaba.fastjson.JSONObject">
+
+        SELECT
+        id,
+        content,
+        palmHandUrl1,
+        positionGps,
+        createId,
+        createNum,
+        resiName,
+        resiTel,
+        isEightHour,
+        createDttm,
+        YEAR(createDttm) year,
+        MONTH(createDttm) month,
+        DAY(createDttm) day
+        from t_attendance
+
+        <where><!--where可以去除第一个空格或者OR-->
+            createNum=#{createNum}
+            <if test="year!=null and year!=''">
+                and YEAR(createDttm) =#{year}
+            </if>
+
+            <if test="month!=null and month!=''">
+                and MONTH(createDttm)=#{month}
+            </if>
+
+            <if test="day!=null and day!=''">
+                and DAY(createDttm)=#{day}
+            </if>
+        </where>
+        ORDER BY createDttm
+    </select>
+
+    <!--考勤提交上送-->
+    <insert id="insertByTA" >
+
+       INSERT INTO t_attendance (id,content,palmHandUrl1,positionGps,createId,createNum,resiName,resiTel,isEightHour)  VALUES(#{id},#{content},#{palmHandUrl1},#{positionGps},#{createId},#{createNum},#{resiName},#{resiTel},#{isEightHour})
+
+    </insert>
+
+</mapper>

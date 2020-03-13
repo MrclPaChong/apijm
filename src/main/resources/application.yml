@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     name: ShiroJwt
-    url: jdbc:mysql://148.70.156.132:3306/smart_city_fhjy?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://148.70.156.132:3306/smart_city_fhjy?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: Qwas#$zx1278
     # 使用Druid数据源
@@ -27,12 +27,17 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
 
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss" #如果使用字符串表示，用这行设置格式
+    timezone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false #使用时间戳，使用数值timestamp表示日期
 
 mybatis:
   # Mybatis配置Mapper路径
   mapper-locations: classpath:mapper/*.xml
   # Mybatis配置Model类对应
-  #type-aliases-package: com.meishutech.permission.model
+  type-aliases-package: com.example.jm.Model
 
 mapper:
   # 通用Mapper的insertSelective和updateByPrimaryKeySelective中是否判断字符串类型!=''

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.jm.mapper.TRoomuserDao">
+
+
+    <!--网格员信息效验-->
+    <select id="getByRoomuserExist" resultType="com.alibaba.fastjson.JSONObject">
+
+               SELECT
+                tr.ID,
+                tr.RoomerName,
+                tr.IDNumber,
+                tr.CallPhone,
+                tr.CardNumber,
+                tr.RoomID,
+                tr.RoomNumber,
+                tr.RoomAddress,
+                tr.RoomUserType,
+                tr.CheckInTime,
+                tr.IdentyPhoto,
+                tr.IsHaveVehicle,
+                tr.VehicleNo,
+                tr.CreateUserID,
+                tr.ImgUrl,
+                tr.BuildingID,
+                tr.Remark,
+                tr.BuildingName,
+                tr.AreaName,
+                tr.SourceType,
+                tr.Nation,
+                tr.LiveType,
+                tr.IsForeign,
+                tr.HouseHoldType,
+                tr.HousePlace,
+                tr.Age,
+                tr.STATUS,
+                tr.TenantStartTime,
+                tr.TenantEndTime,
+                tr.Sex,
+								tgoi.NAME,
+								tgoi.MOBILE,
+								tgoi.CREATE_ID
+
+            FROM
+                t_roomuser tr,t_grid_operator_info tgoi
+            WHERE
+                tr.CardNumber =#{CardNumber}
+								AND
+								tr.RoomerName = tgoi.NAME
+    </select>
+
+    <!--根据身份证号判断居民是否已经录入-->
+    <select id="getByRoomuserExist2" resultType="com.alibaba.fastjson.JSONObject">
+
+               SELECT
+                tr.ID,
+                tr.RoomerName,
+                tr.IDNumber,
+                tr.CallPhone,
+                tr.CardNumber,
+                tr.RoomID,
+                tr.RoomNumber,
+                tr.RoomAddress,
+                tr.RoomUserType,
+                tr.CheckInTime,
+                tr.IdentyPhoto,
+                tr.IsHaveVehicle,
+                tr.VehicleNo,
+                tr.CreateUserID,
+                tr.ImgUrl,
+                tr.BuildingID,
+                tr.Remark,
+                tr.BuildingName,
+                tr.AreaName,
+                tr.SourceType,
+                tr.Nation,
+                tr.LiveType,
+                tr.IsForeign,
+                tr.HouseHoldType,
+                tr.HousePlace,
+                tr.Age,
+                tr.STATUS,
+                tr.TenantStartTime,
+                tr.TenantEndTime,
+                tr.Sex
+            FROM
+                t_roomuser tr
+            WHERE
+                tr.CardNumber =#{CardNumber}
+    </select>
+    <!--居民信息提交上送-->
+    <insert id="insertByRoomuser" >
+
+       INSERT INTO t_roomuser (ID,RoomerName,IDNumber,CallPhone,CardNumber,RoomID,RoomNumber,RoomAddress,RoomUserType,
+       CheckInTime,IdentyPhoto,IsHaveVehicle,VehicleNo,CreateUserID,ImgUrl,BuildingID,Remark,BuildingName,AreaName,SourceType,
+       Nation,LiveType,IsForeign,HouseHoldType,HousePlace,Age,TenantStartTime,TenantEndTime,Sex
+       ) VALUES
+       (#{ID},#{RoomerName},#{IDNumber},#{CallPhone},#{CardNumber},#{RoomID},#{RoomNumber},#{RoomAddress},#{RoomUserType},#{CheckInTime},#{IdentyPhoto},#{IsHaveVehicle},#{VehicleNo}
+       ,#{CreateUserID},#{ImgUrl},#{BuildingID},#{Remark},#{BuildingName},#{AreaName},#{SourceType},#{Nation},#{LiveType},#{IsForeign},#{HouseHoldType},#{HousePlace}
+       ,#{Age},#{TenantStartTime},#{TenantEndTime},#{Sex}
+       )
+    </insert>
+
+
+
+
+    <!--修改-->
+    <update id="UpdateByRoomuser" parameterType="com.alibaba.fastjson.JSONObject" >
+        update t_roomuser
+         <trim prefix="set" suffixOverrides=",">
+            <if test="RoomerName != null">RoomerName=#{RoomerName},</if>
+            <if test="IDNumber != null">IDNumber=#{IDNumber},</if>
+            <if test="CallPhone != null">CallPhone=#{CallPhone},</if>
+            <if test="CardNumber != null">CallPhone=#{CardNumber},</if>
+            <if test="RoomID != null">RoomID=#{RoomID},</if>
+            <if test="RoomNumber != null">RoomNumber=#{RoomNumber},</if>
+            <if test="RoomAddress != null">RoomAddress=#{RoomAddress},</if>
+            <if test="RoomUserType != null">RoomUserType=#{RoomUserType},</if>
+            <if test="CheckInTime != null">CheckInTime=#{CheckInTime},</if>
+            <if test="CreateTime != null">CreateTime=#{CreateTime},</if>
+            <if test="UpdateTime != null">UpdateTime=#{UpdateTime},</if>
+            <if test="IdentyPhoto != null">IdentyPhoto=#{IdentyPhoto},</if>
+            <if test="IsHaveVehicle != null">IsHaveVehicle=#{IsHaveVehicle},</if>
+            <if test="VehicleNo != null">VehicleNo=#{VehicleNo},</if>
+            <if test="CreateUserID != null">CreateUserID=#{CreateUserID},</if>
+            <if test="ImgUrl != null">ImgUrl=#{ImgUrl},</if>
+            <if test="BuildingID != null">BuildingID=#{BuildingID},</if>
+            <if test="Remark != null">Remark=#{Remark},</if>
+            <if test="BuildingName != null">BuildingName=#{BuildingName},</if>
+            <if test="AreaName != null">AreaName=#{AreaName},</if>
+            <if test="SourceType != null">SourceType=#{SourceType},</if>
+            <if test="Nation != null">Nation=#{Nation},</if>
+            <if test="LiveType != null">LiveType=#{LiveType},</if>
+            <if test="IsForeign != null">IsForeign=#{IsForeign},</if>
+            <if test="HouseHoldType != null">HouseHoldType=#{HouseHoldType},</if>
+            <if test="HousePlace != null">HousePlace=#{HousePlace},</if>
+            <if test="Age != null">Age=#{Age},</if>
+            <if test="Status != null">Status=#{Status},</if>
+            <if test="TenantStartTime != null">TenantStartTime=#{TenantStartTime},</if>
+            <if test="TenantEndTime != null">TenantEndTime=#{TenantEndTime},</if>
+            <if test="Sex != null">Sex=#{Sex},</if>
+            <if test="IsDelete != null">IsDelete=#{IsDelete},</if>
+
+
+         </trim>
+        where
+        ID=#{ID}
+    </update>
+
+
+<!--    &lt;!&ndash;根据ID修改居民信息&ndash;&gt;
+    <update id="UpdateByRoomuser" parameterMap="com.alibaba.fastjson.JSONObject">
+
+update t_roomuser set RoomerName=#{RoomerName} where ID=#{ID}
+
+           &lt;!&ndash; UPDATE t_roomuser
+               <trim prefix="set" suffixOverrides=",">
+
+
+
+                
+
+               
+
+             
+
+
+                <if test="HouseHoldType!=null">HouseHoldType=#{HouseHoldType},</if>
+
+                <if test="HousePlace!=null">HousePlace=#{HousePlace},</if>
+
+                <if test="Age!=null">Age=#{Age},</if>
+
+                <if test="Status!=null">Status=#{Status},</if>
+
+                <if test="TenantStartTime!=null">TenantStartTime=#{TenantStartTime},</if>
+
+                <if test="TenantEndTime!=null">TenantEndTime=#{TenantEndTime},</if>
+
+                <if test="Sex!=null">Sex=#{Sex},</if>
+
+                <if test="IsDelete!=null">IsDelete=#{IsDelete},</if>
+
+           </trim>
+
+            WHERE ID=#{ID}&ndash;&gt;
+
+    </update>-->
+
+
+    <delete id="delByRoomuser" parameterType="com.alibaba.fastjson.JSONObject">
+        DELETE FROM t_roomuser WHERE ID=#{ID}
+    </delete>
+</mapper>
